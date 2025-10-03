@@ -3,6 +3,11 @@ package com.deigo.apiTarefas.infrastructure.entitys;
 import com.deigo.apiTarefas.infrastructure.enumTarefas.Status;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.Instant;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -16,20 +21,19 @@ public class Tarefas {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id;
 
-    @Column(name = "nome")
+    @Column(name = "titulo")
     private String titulo;
 
-    @Column(name = "nome")
+    @Column(name = "descricao")
     private String descricao;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "nome")
+    @Column(name = "status")
     private Status status;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuarioId;
-
 }
