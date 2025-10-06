@@ -1,6 +1,6 @@
 services:
   mysql:
-    container_name: 'guide-mysql'
+    container_name: 'mysql'
     image: 'mysql:latest'
     environment:
       - 'MYSQL_DATABASE=mydatabase'
@@ -9,3 +9,20 @@ services:
       - 'MYSQL_USER=myuser'
     ports:
       - '3306:3306'
+
+  api-tarefas:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: 'api'
+    ports:
+      - '8080:8080'
+    depends_on:
+      - mysql
+    restart: always
+    environment:
+      - 'SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/mydatabase'
+      - 'SPRING_DATASOURCE_USERNAME=myuser'
+      - 'SPRING_DATASOURCE_PASSWORD=secret'
+      - 'SPRING_JPA_HIBERNATE_DDL_AUTO=update'
+      - 'SPRING_JPA_SHOW_SQL=true'

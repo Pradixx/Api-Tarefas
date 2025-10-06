@@ -38,6 +38,6 @@ public class Usuario {
     @UpdateTimestamp
     private Instant updateTimestamp;
 
-    @OneToMany(mappedBy = "usuarioId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tarefas> tarefas = new ArrayList<>();
 }

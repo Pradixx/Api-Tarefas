@@ -34,6 +34,6 @@ public class Tarefas {
     private Status status;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuarioId;
+    @JoinColumn(name = "usuarioId")
+    private Usuario usuario;
 }
