@@ -3,8 +3,8 @@ package com.deigo.apiTarefas.infrastructure.repository;
 import com.deigo.apiTarefas.infrastructure.entitys.Tarefas;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,4 +16,6 @@ public interface TarefasRepository extends JpaRepository<Tarefas, Integer> {
     boolean existsById(UUID id);
 
     void deleteById(UUID id);
+
+    List<String> findByUsuarioId(UUID usuarioId);
 }

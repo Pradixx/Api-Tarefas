@@ -1,6 +1,6 @@
 package com.deigo.apiTarefas.controller;
 
-import com.deigo.apiTarefas.controller.dto.CriarTarefaDto;
+import com.deigo.apiTarefas.controller.dtoTarefas.CriarTarefaDto;
 import com.deigo.apiTarefas.infrastructure.entitys.Tarefas;
 import com.deigo.apiTarefas.service.TarefasService;
 import org.springframework.http.ResponseEntity;

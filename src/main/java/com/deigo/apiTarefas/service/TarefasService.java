@@ -1,7 +1,7 @@
 package com.deigo.apiTarefas.service;
 
-import com.deigo.apiTarefas.controller.dto.AtualizarTarefaDto;
-import com.deigo.apiTarefas.controller.dto.CriarTarefaDto;
+import com.deigo.apiTarefas.controller.dtoTarefas.AtualizarTarefaDto;
+import com.deigo.apiTarefas.controller.dtoTarefas.CriarTarefaDto;
 import com.deigo.apiTarefas.infrastructure.entitys.Tarefas;
 import com.deigo.apiTarefas.infrastructure.repository.TarefasRepository;
 import org.springframework.stereotype.Service;

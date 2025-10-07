@@ -1,4 +1,4 @@
-package com.deigo.apiTarefas.controller.dto;
+package com.deigo.apiTarefas.controller.dtoTarefas;
 
 import com.deigo.apiTarefas.infrastructure.entitys.Usuario;
 import com.deigo.apiTarefas.infrastructure.enumTarefas.Status;
