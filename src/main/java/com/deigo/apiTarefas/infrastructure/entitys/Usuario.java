@@ -1,5 +1,6 @@
 package com.deigo.apiTarefas.infrastructure.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -21,7 +22,7 @@ import java.util.UUID;
 public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "nome")
@@ -33,12 +34,7 @@ public class Usuario {
     @Column(name = "senha")
     private String senha;
 
-    @CreationTimestamp
-    private Instant creationTimestamp;
-
-    @UpdateTimestamp
-    private Instant updateTimestamp;
-
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("usuarioId")
     private List<Tarefas> tarefas = new ArrayList<>();
 }
