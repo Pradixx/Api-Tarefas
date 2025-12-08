@@ -3,7 +3,9 @@ package com.deigo.apiTarefas.service;
 import com.deigo.apiTarefas.controller.dtoTarefas.AtualizarTarefaDto;
 import com.deigo.apiTarefas.controller.dtoTarefas.CriarTarefaDto;
 import com.deigo.apiTarefas.infrastructure.entitys.Tarefas;
+import com.deigo.apiTarefas.infrastructure.entitys.Usuario;
 import com.deigo.apiTarefas.infrastructure.repository.TarefasRepository;
+import com.deigo.apiTarefas.infrastructure.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,23 +16,26 @@ import java.util.UUID;
 public class TarefasService {
 
     private final TarefasRepository tarefasRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public TarefasService(TarefasRepository tarefasRepository) {
+    public TarefasService(TarefasRepository tarefasRepository, UsuarioRepository usuarioRepository) {
         this.tarefasRepository = tarefasRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
-    public UUID criarTarefa(CriarTarefaDto criarTarefaDto){
+    public Tarefas criarTarefa(CriarTarefaDto dto){
 
-        var entity = new Tarefas(
-                UUID.randomUUID(),
-                criarTarefaDto.titulo(),
-                criarTarefaDto.descricao(),
-                criarTarefaDto.status(),
-                criarTarefaDto.usuarioId());
+        Usuario usuario = usuarioRepository.findById((dto.usuarioId()))
+                .orElseThrow(() -> new RuntimeException("Usuario não encontrado com ID"));
 
-        var salvarTarefa = tarefasRepository.save(entity);
+        Tarefas novaTarefa = Tarefas.builder()
+                .titulo(dto.titulo())
+                .descricao(dto.descricao())
+                .status(dto.status())
+                .usuario(usuario)
+                .build();
 
-        return salvarTarefa.getId();
+         return tarefasRepository.saveAndFlush(novaTarefa);
     }
 
     public Optional<Tarefas> buscarTarefaPeloId(String tarefasId) {
@@ -41,25 +46,21 @@ public class TarefasService {
         return tarefasRepository.findAll();
     }
 
-    public void atualizarTarefaPeloId(String tarefasId, AtualizarTarefaDto atualizarTarefaDto){
+    public Tarefas atualizarTarefaPeloId(UUID tarefasId, AtualizarTarefaDto dto){
+        Tarefas tarefasEntity = tarefasRepository.findById(tarefasId).orElseThrow(() ->
+                new RuntimeException("Tarefa não encontrada"));
 
-        var id = UUID.fromString(tarefasId);
-
-        var tarefaEntity = tarefasRepository.findById(id);
-
-        if (tarefaEntity.isPresent()){
-            var tarefas = tarefaEntity.get();
-
-            if (atualizarTarefaDto.titulo() != null){
-                tarefas.setTitulo(atualizarTarefaDto.titulo());
-            }
-
-            if (atualizarTarefaDto.descricao() != null){
-                tarefas.setDescricao(atualizarTarefaDto.descricao());
-            }
-
-            tarefasRepository.save(tarefas);
+        if (dto.titulo() != null) {
+                tarefasEntity.setTitulo(dto.titulo());
         }
+        if (dto.descricao() != null) {
+            tarefasEntity.setDescricao(dto.descricao());
+        }
+        if(dto.status() != null) {
+            tarefasEntity.setStatus(dto.status());
+        }
+
+        return tarefasRepository.saveAndFlush(tarefasEntity);
     }
 
     public void deletarPeloId(String tarefaId) {
