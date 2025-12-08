@@ -1,9 +1,12 @@
 package com.deigo.apiTarefas.controller;
 
+import com.deigo.apiTarefas.controller.dtoUsuarios.AtualizarUsuariosDto;
+import com.deigo.apiTarefas.controller.dtoUsuarios.CriarUsuariosDto;
+import com.deigo.apiTarefas.infrastructure.entitys.Tarefas;
 import com.deigo.apiTarefas.infrastructure.entitys.Usuario;
 import com.deigo.apiTarefas.service.UsuarioService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,37 +14,36 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/usuarios")
+@RequiredArgsConstructor
 
 public class UsuarioController {
+
     public final UsuarioService usuarioService;
 
-    public UsuarioController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
-
     @PostMapping
-    public ResponseEntity<Usuario> criarUsuario(@RequestBody @Validated Usuario usuario){
-        return ResponseEntity.ok(usuarioService.salvar(usuario));
+    public ResponseEntity<Void> criarUsuario(@RequestBody CriarUsuariosDto usuario){
+        usuarioService.criarUsuario(usuario);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
     public ResponseEntity<List<Usuario>> listarUsuarios() {
-        return ResponseEntity.ok(usuarioService.listar());
+        return ResponseEntity.ok(usuarioService.listarUsuarios());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> atualizarUsuarios (@PathVariable UUID id, @RequestBody Usuario usuario){
-        return ResponseEntity.ok(usuarioService.atualizar(id, usuario));
+    public ResponseEntity<Usuario> atualizarUsuarios (@PathVariable UUID id, @RequestBody AtualizarUsuariosDto usuario){
+        return ResponseEntity.ok(usuarioService.atualizarUsuario(id, usuario));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarUsuario (@PathVariable UUID id){
-        usuarioService.deletar(id);
+        usuarioService.deletarUsuario(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}/tarefas")
-    public ResponseEntity<List<String>> listarTarefasDoUsuario (@PathVariable UUID id){
+    public ResponseEntity<List<Tarefas>> listarTarefasDoUsuario (@PathVariable UUID id){
         return ResponseEntity.ok(usuarioService.listarTarefasDoUsuario(id));
     }
 
