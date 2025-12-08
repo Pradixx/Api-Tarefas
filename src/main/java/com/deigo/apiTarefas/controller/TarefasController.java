@@ -1,30 +1,29 @@
 package com.deigo.apiTarefas.controller;
 
+import com.deigo.apiTarefas.controller.dtoTarefas.AtualizarTarefaDto;
 import com.deigo.apiTarefas.controller.dtoTarefas.CriarTarefaDto;
 import com.deigo.apiTarefas.infrastructure.entitys.Tarefas;
 import com.deigo.apiTarefas.service.TarefasService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/tarefas")
-
+@RequiredArgsConstructor
 public class TarefasController {
 
     private final TarefasService tarefasService;
 
-    public TarefasController(TarefasService tarefasService) {
-        this.tarefasService = tarefasService;
-    }
-
     @PostMapping
-    public ResponseEntity<Tarefas> cirarTarefa(@RequestBody CriarTarefaDto criarTarefaDto){
-        var tarefaId = tarefasService.criarTarefa(criarTarefaDto);
-
-        return ResponseEntity.created(URI.create("/tarefas" + tarefaId.toString())).build();
+    public ResponseEntity<Void> criarTarefa(@RequestBody CriarTarefaDto criarTarefaDto){
+        tarefasService.criarTarefa(criarTarefaDto);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{tarefasId}")
@@ -38,15 +37,18 @@ public class TarefasController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<Tarefas>> listarTarefas() {
-        var tarefas = tarefasService.listarTarefas();
-
-        return ResponseEntity.ok(tarefas);
+    @PutMapping("/{tarefaId}")
+    public ResponseEntity<Tarefas> atualizarTarefa (@PathVariable UUID tarefaId, @RequestBody AtualizarTarefaDto tarefas){
+        return ResponseEntity.ok(tarefasService.atualizarTarefaPeloId(tarefaId, tarefas));
     }
 
-    @PutMapping("/{users}")
-    public ResponseEntity<Void> deletarPeloId(@PathVariable("tarefas") String tarefasId){
+    @GetMapping
+    public ResponseEntity<List<Tarefas>> listarTarefas() {
+        return ResponseEntity.ok(tarefasService.listarTarefas());
+    }
+
+    @DeleteMapping("/{tarefaId}")
+    public ResponseEntity<Void> deletarPeloId(@PathVariable("tarefaId") String tarefasId){
         tarefasService.deletarPeloId(tarefasId);
         return  ResponseEntity.noContent().build();
     }
