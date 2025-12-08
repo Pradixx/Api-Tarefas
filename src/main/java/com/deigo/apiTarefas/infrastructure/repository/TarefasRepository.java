@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface TarefasRepository extends JpaRepository<Tarefas, Integer> {
+public interface TarefasRepository extends JpaRepository<Tarefas, UUID> {
     
     Optional<Tarefas> findById(UUID id);
 
@@ -17,5 +17,5 @@ public interface TarefasRepository extends JpaRepository<Tarefas, Integer> {
 
     void deleteById(UUID id);
 
-    List<String> findByUsuarioId(UUID usuarioId);
+    List<Tarefas> findByUsuarioId(UUID usuarioId);
 }
