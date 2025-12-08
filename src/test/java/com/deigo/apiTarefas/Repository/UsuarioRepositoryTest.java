@@ -51,7 +51,7 @@ class UsuarioRepositoryTest {
     void deveFindByIdQuandoUsuarioExistir() {
         // Arrange
         Usuario usuarioSalvo = entityManager.persistAndFlush(usuarioTeste);
-        entityManager.clear(); // Limpa o cache para forçar busca no banco
+        entityManager.clear();
         UUID id = usuarioSalvo.getId();
 
         // Act
