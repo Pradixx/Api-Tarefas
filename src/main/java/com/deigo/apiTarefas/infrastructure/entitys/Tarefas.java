@@ -1,12 +1,10 @@
 package com.deigo.apiTarefas.infrastructure.entitys;
 
 import com.deigo.apiTarefas.infrastructure.enumTarefas.Status;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -20,7 +18,7 @@ import java.util.UUID;
 public class Tarefas {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "titulo")
@@ -35,5 +33,6 @@ public class Tarefas {
 
     @ManyToOne
     @JoinColumn(name = "usuarioId")
+    @JsonIgnoreProperties({"tarefas"})
     private Usuario usuario;
 }
