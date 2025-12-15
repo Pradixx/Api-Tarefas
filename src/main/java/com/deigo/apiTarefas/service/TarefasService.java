@@ -15,11 +15,11 @@ import java.util.UUID;
 @Service
 public class TarefasService {
 
-    private final TarefasRepository tarefasRepository;
+    private final TarefasRepository tRepository;
     private final UsuarioRepository usuarioRepository;
 
-    public TarefasService(TarefasRepository tarefasRepository, UsuarioRepository usuarioRepository) {
-        this.tarefasRepository = tarefasRepository;
+    public TarefasService(TarefasRepository tRepository, UsuarioRepository usuarioRepository) {
+        this.tRepository = tRepository;
         this.usuarioRepository = usuarioRepository;
     }
 
@@ -35,19 +35,19 @@ public class TarefasService {
                 .usuario(usuario)
                 .build();
 
-         return tarefasRepository.saveAndFlush(novaTarefa);
+         return tRepository.saveAndFlush(novaTarefa);
     }
 
     public Optional<Tarefas> buscarTarefaPeloId(String tarefasId) {
-        return tarefasRepository.findById((UUID.fromString(tarefasId)));
+        return tRepository.findById((UUID.fromString(tarefasId)));
     }
 
     public List<Tarefas> listarTarefas() {
-        return tarefasRepository.findAll();
+        return tRepository.findAll();
     }
 
     public Tarefas atualizarTarefaPeloId(UUID tarefasId, AtualizarTarefaDto dto){
-        Tarefas tarefasEntity = tarefasRepository.findById(tarefasId).orElseThrow(() ->
+        Tarefas tarefasEntity = tRepository.findById(tarefasId).orElseThrow(() ->
                 new RuntimeException("Tarefa não encontrada"));
 
         if (dto.titulo() != null) {
@@ -60,16 +60,16 @@ public class TarefasService {
             tarefasEntity.setStatus(dto.status());
         }
 
-        return tarefasRepository.saveAndFlush(tarefasEntity);
+        return tRepository.saveAndFlush(tarefasEntity);
     }
 
     public void deletarPeloId(String tarefaId) {
         var id = UUID.fromString(tarefaId);
 
-        var tarefaExiste = tarefasRepository.existsById(id);
+        var tarefaExiste = tRepository.existsById(id);
 
         if(tarefaExiste) {
-            tarefasRepository.deleteById(id);
+            tRepositoryy.deleteById(id);
         }
     }
 }
